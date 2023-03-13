@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      table {
+        width: 100%;
+        text-align: center;
+      }
+      input {
+        width: 100%;
+        text-align: center;
+      }
+      form {
+        width: 50%;
+        border: 3px solid grey;
+        border-radius: 10px;
+        padding: 30px;
+        text-align: center;
+        margin: auto;
+      }
+      button {
+        margin-top: 20px;
+      }
+    </style>
+    <meta charset="UTF-8" />
+    <title>IWCN Assignment React JS</title>
+    <script
+      src="https://unpkg.com/react@18/umd/react.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+      crossorigin
+    ></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      // Created a function App Component and  where we will do all or tasks
+      function App() {
+        const [data, setData] = React.useState([
+          { id: 1, name: "HTML" },
+          { id: 2, name: "CSS" },
+          { id: 3, name: "JAVASCRIPT" },
+          { id: 4, name: "REACT JS" },
+          { id: 5, name: "LINKED IN" },
+          { id: 6, name: "FACEBOOK" },
+          { id: 7, name: "WHATSAPP" },
+          { id: 8, name: "GMAIL" },
+        ]);
+        const [loading, setLoading] = React.useState(false);
+        // Handling input changes here
+        function handleChange(rowIndex, field, newValue) {
+          const updatedRows = [...data];
+          updatedRows[rowIndex][field] = newValue;
+          setData(updatedRows);
+        }
+
+        // Handling editing here
+        const handleEdit = (rowIndex, colIndex, event) => {
+          const newData = [...data];
+          newData[rowIndex][colIndex] = event.target.value;
+          setData(newData);
+        };
+        const api = "http://localhost:8080/task";
+        // For posting data I have used the json server. You can use anything
+        function handleSubmit(event) {
+          event.preventDefault();
+          setLoading(true);
+          fetch(api, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+          })
+            .then((res) => {
+              setLoading(false);
+            })
+            .catch((err) => {
+              setLoading(false);
+              alert("Some error occured while submitting data");
+            });
+        }
+
+        return (
+          <form onSubmit={handleSubmit}>
+            <table>
+              <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>Name</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.map((row, index) => (
+                  <TableData
+                    key={row.id}
+                    rowIndex={index}
+                    rowData={row}
+                    onValueChange={handleChange}
+                  />
+                ))}
+              </tbody>
+            </table>
+            <button type="submit">{loading ? "LOADING" : "SUBMIT"}</button>
+          </form>
+        );
+      }
+
+      function TableData({ rowIndex, rowData, onValueChange }) {
+        function handleChange(event) {
+          const field = event.target.name;
+          const value = event.target.value;
+          onValueChange(rowIndex, field, value);
+        }
+
+        return (
+          <tr>
+            <td>{rowData.id}</td>
+            <td>
+              <input
+                type="text"
+                name="name"
+                value={rowData.name}
+                onChange={handleChange}
+              />
+            </td>
+          </tr>
+        );
+      }
+
+      // Render the editable table component
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(<App />);
+    </script>
+  </body>
+</html>
