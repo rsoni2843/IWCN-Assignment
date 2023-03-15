@@ -7,7 +7,7 @@ class TodoController {
     const sql = "INSERT INTO tasks (task) VALUES (?)";
     const query = db.query(sql, [task], (error, result) => {
       if (error) throw error;
-      console.log(result);
+      // console.log(result);
       res.send("Task Posted Successfully");
     });
   };
@@ -29,7 +29,10 @@ class TodoController {
     const query = db.query(sql, [id], (error, result) => {
       if (error) throw error;
       if (result) {
-        res.send("Task Deleted Successfully");
+        db.query("SELECT * FROM tasks", (error2, result2) => {
+          if (error2) throw error2;
+          res.send({ message: "Task Deleted Successfully", result2 });
+        });
       }
     });
   };

@@ -10,6 +10,6 @@ router.post("/add_task", TodoController.addTask);
 router.get("/get_task", TodoController.getTask);
 
 // Deleting task here
-router.delete("/delete_task", TodoController.deleteTask);
+router.post("/delete_task", TodoController.deleteTask);
 
 module.exports = router;
