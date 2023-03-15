@@ -1,8 +1,8 @@
 The backend is running on http://localhost:8080 and has following routes :- 
 
-Posting Task - http://localhost:8080/api/add_task (POST)
-Getting Task - http://localhost:8080/api/get_task (GET)
-Deleting Task - http://localhost:8080/api/delete_task (POST)
+* Posting Task - http://localhost:8080/api/add_task (POST)
+* Getting Task - http://localhost:8080/api/get_task (GET)
+* Deleting Task - http://localhost:8080/api/delete_task (POST)
 
 ## Screenshots
 
